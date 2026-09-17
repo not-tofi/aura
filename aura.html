@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turnos Uñas</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #fdf2f8;
+    color: #3f2d3a;
+    padding: 16px;
+    padding-bottom: 80px;
+    line-height: 1.5;
+  }
+
+  header {
+    background: linear-gradient(135deg, #ec4899, #a855f7);
+    color: #fff;
+    padding: 20px 16px;
+    border-radius: 16px;
+    margin-bottom: 18px;
+    text-align: center;
+    box-shadow: 0 4px 14px rgba(236, 72, 153, .25);
+  }
+
+  header h1 { font-size: 1.35rem; }
+  header p { font-size: .85rem; opacity: .9; margin-top: 4px; }
+
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 10px rgba(63, 45, 58, .07);
+  }
+
+  .card h2 {
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+    color: #a855f7;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  label {
+    display: block;
+    font-size: .82rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #6b4a5c;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1.5px solid #f3d3e3;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: #fffafc;
+    margin-bottom: 12px;
+    color: #3f2d3a;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #ec4899;
+    background: #fff;
+  }
+
+  textarea { resize: vertical; min-height: 60px; }
+
+  .fila { display: flex; gap: 10px; }
+  .fila > div { flex: 1; }
+
+  button {
+    border: none;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: .95rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ec4899, #a855f7);
+    color: #fff;
+    width: 100%;
+    transition: transform .1s, opacity .2s;
+  }
+
+  button:active { transform: scale(.98); }
+  button.secundario {
+    background: #fdf2f8;
+    color: #a855f7;
+    border: 1.5px solid #f3d3e3;
+    width: auto;
+  }
+
+  .precio-visto {
+    font-size: .85rem;
+    color: #a855f7;
+    font-weight: 600;
+    margin: -6px 0 12px;
+    min-height: 20px;
+  }
+
+  .turno {
+    border-left: 4px solid #ec4899;
+    background: #fffafc;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+
+  .turno .nombre {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 2px;
+  }
+
+  .turno .detalle {
+    font-size: .85rem;
+    color: #6b4a5c;
+    margin-bottom: 8px;
+  }
+
+  .turno .detalle span { display: block; }
+
+  .turno .precio {
+    font-weight: 700;
+    color: #a855f7;
+  }
+
+  .estado {
+    display: inline-block;
+    font-size: .7rem;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    margin-bottom: 6px;
+  }
+
+  .estado.pendiente  { background: #fef3c7; color: #b45309; }
+  .estado.confirmado { background: #dbeafe; color: #1d4ed8; }
+  .estado.realizado  { background: #dcfce7; color: #15803d; }
+  .estado.cancelado  { background: #fee2e2; color: #b91c1c; }
+
+  .acciones {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .acciones button {
+    width: auto;
+    flex: 1;
+    padding: 7px 8px;
+    font-size: .75rem;
+    border-radius: 8px;
+    background: #fdf2f8;
+    color: #a855f7;
+    border: 1.5px solid #f3d3e3;
+  }
+
+  .acciones button.borrar {
+    background: #fff1f2;
+    color: #e11d48;
+    border-color: #fecdd3;
+  }
+
+  .tipo-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .tipo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fffafc;
+    border: 1.5px solid #f3d3e3;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: .9rem;
+  }
+
+  .tipo-item strong { color: #3f2d3a; }
+  .tipo-item span { color: #a855f7; font-weight: 700; }
+
+  .vacio {
+    text-align: center;
+    color: #a390a0;
+    font-size: .9rem;
+    padding: 24px 12px;
+    font-style: italic;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #3f2d3a;
+    color: #fff;
+    padding: 11px 20px;
+    border-radius: 30px;
+    font-size: .88rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s, bottom .3s;
+    z-index: 100;
+  }
+
+  .toast.visible { opacity: 1; bottom: 30px; }
+
+  @media (max-width: 380px) {
+    .fila { flex-direction: column; gap: 0; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Turnos Uñas</h1>
+
+<div class="card">
+  <h2>Nuevo turno</h2>
+  <label>Nombre del cliente</label>
+  <input id="nombre" type="text" placeholder="Ej: Ana Pérez">
+
+  <label>Teléfono</label>
+  <input id="telefono" type="tel" placeholder="Ej: 1122334455">
+
+  <label>Tipo de uña</label>
+  <select id="tipo"></select>
+
+  <div class="fila">
+    <div>
+      <label>Fecha</label>
+      <input id="fecha" type="date">
+    </div>
+    <div>
+      <label>Hora</label>
+      <input id="hora" type="time">
+    </div>
+  </div>
+
+  <label>Notas (opcional)</label>
+  <textarea id="notas" rows="2"></textarea>
+
+  <button onclick="guardarTurno()">Guardar turno</button>
+</div>
+
+<div class="card">
+  <h2>Tipos de uña y precios</h2>
+  <div id="listaTipos"></div>
+  <div class="fila" style="margin-top:10px">
+    <input id="nuevoTipoNombre" type="text" placeholder="Nombre (ej: Esculpidas)">
+    <input id="nuevoTipoPrecio" type="number" placeholder="Precio">
+  </div>
+  <button class="sec" onclick="agregarTipo()">Agregar tipo</button>
+</div>
+
+<div class="card">
+  <h2>Turnos agendados</h2>
+  <div id="listaTurnos"></div>
+</div>
+
+<div id="toast" class="toast" aria-live="polite"></div>
+
+<script>
+const DB_NOMBRE = "turnosDB";
+const DB_VERSION = 1;
+
+let db = null;
+
+const $ = (id) => document.getElementById(id);
+
+function toast(msg) {
+  const t = $("toast");
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add("visible");
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove("visible"), 2200);
+}
+
+function abrirDB() {
+  return new Promise((res, rej) => {
+    const req = indexedDB.open(DB_NOMBRE, DB_VERSION);
+    req.onupgradeneeded = (e) => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains("tipos")) {
+        const tipos = d.createObjectStore("tipos", { keyPath: "id", autoIncrement: true });
+        tipos.createIndex("nombre", "nombre", { unique: true });
+      }
+      if (!d.objectStoreNames.contains("turnos")) {
+        const turnos = d.createObjectStore("turnos", { keyPath: "id", autoIncrement: true });
+        turnos.createIndex("fecha", "fecha", { unique: false });
+      }
+    };
+    req.onsuccess = (e) => {
+      db = e.target.result;
+      res(db);
+    };
+    req.onerror = (e) => rej(e.target.error || new Error("No se pudo abrir la base de datos"));
+  });
+}
+
+function guardar(store, dato) {
+  if (!db) return Promise.reject(new Error("La base de datos no está abierta"));
+
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, "readwrite");
+    const req = tx.objectStore(store).put(dato);
+    req.onsuccess = () => res(req.result);
+    req.onerror = (e) => rej(e.target.error || new Error(`Error guardando en ${store}`));
+  });
+}
+
+function listar(store) {
+  if (!db) return Promise.resolve([]);
+
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, "readonly");
+    const req = tx.objectStore(store).getAll();
+    req.onsuccess = () => res(req.result || []);
+    req.onerror = (e) => rej(e.target.error || new Error(`Error listando ${store}`));
+  });
+}
+
+function borrar(store, id) {
+  if (!db) return Promise.reject(new Error("La base de datos no está abierta"));
+
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, "readwrite");
+    const req = tx.objectStore(store).delete(id);
+    req.onsuccess = () => res(true);
+    req.onerror = (e) => rej(e.target.error || new Error(`Error borrando de ${store}`));
+  });
+}
+
+function hoyISO() {
+  const d = new Date();
+  const mes = String(d.getMonth() + 1).padStart(2, "0");
+  const dia = String(d.getDate()).padStart(2, "0");
+  return `${d.getFullYear()}-${mes}-${dia}`;
+}
+
+function formatearFecha(iso) {
+  if (!iso || !iso.includes("-")) return "--";
+  const [a, m, d] = iso.split("-");
+  return `${d}/${m}/${a}`;
+}
+
+const NOMBRE_ESTADO = {
+  pendiente: "Pendiente",
+  confirmado: "Confirmado",
+  realizado: "Realizado",
+  cancelado: "Cancelado"
+};
+
+async function cargarSelectTipos() {
+  const sel = $("tipo");
+  if (!sel) return;
+
+  const tipos = await listar("tipos");
+  sel.innerHTML = '<option value="">— Elegí un tipo —</option>';
+
+  for (const t of tipos) {
+    const op = document.createElement("option");
+    op.value = String(t.id);
+    op.textContent = `${t.nombre} — $${Number(t.precio).toFixed(2)}`;
+    op.dataset.precio = String(Number(t.precio) || 0);
+    op.dataset.nombre = t.nombre || "";
+    sel.appendChild(op);
+  }
+}
+
+async function renderTipos() {
+  const cont = $("listaTipos");
+  if (!cont) return;
+
+  const tipos = await listar("tipos");
+
+  if (tipos.length === 0) {
+    cont.innerHTML = '<p class="vacio">Todavía no cargaste ningún tipo de uña.</p>';
+    cont.className = "";
+    return;
+  }
+
+  cont.innerHTML = "";
+  cont.className = "tipo-lista";
+
+  for (const t of tipos) {
+    const div = document.createElement("div");
+    div.className = "tipo-item";
+
+    const nombre = document.createElement("strong");
+    nombre.textContent = t.nombre;
+
+    const precio = document.createElement("span");
+    precio.textContent = `$${Number(t.precio).toFixed(2)}`;
+
+    const btn = document.createElement("button");
+    btn.textContent = "Borrar";
+    btn.className = "secundario";
+    btn.type = "button";
+    btn.onclick = async () => {
+      try {
+        await borrar("tipos", t.id);
+        toast("Tipo eliminado");
+        await renderTipos();
+        await cargarSelectTipos();
+      } catch (error) {
+        console.error(error);
+        toast("No se pudo eliminar el tipo");
+      }
+    };
+
+    div.append(nombre, precio, btn);
+    cont.appendChild(div);
+  }
+}
+
+async function agregarTipo() {
+  const nombreInput = $("nuevoTipoNombre");
+  const precioInput = $("nuevoTipoPrecio");
+
+  if (!nombreInput || !precioInput) return;
+
+  const nombre = nombreInput.value.trim();
+  const precio = Number(precioInput.value);
+
+  if (!nombre || Number.isNaN(precio) || precio <= 0) {
+    toast("Ingresá un nombre y precio válido");
+    return;
+  }
+
+  try {
+    await guardar("tipos", { nombre, precio });
+    nombreInput.value = "";
+    precioInput.value = "";
+    toast("Tipo agregado");
+    await renderTipos();
+    await cargarSelectTipos();
+  } catch (error) {
+    console.error(error);
+    toast("Ese tipo ya existe o hubo un error");
+  }
+}
+
+async function renderTurnos() {
+  const cont = $("listaTurnos");
+  if (!cont) return;
+
+  const turnos = await listar("turnos");
+
+  if (turnos.length === 0) {
+    cont.innerHTML = '<p class="vacio">Todavía no tenés turnos agendados.</p>';
+    return;
+  }
+
+  turnos.sort((a, b) => `${a.fecha || ""}T${a.hora || "00:00"}`.localeCompare(`${b.fecha || ""}T${b.hora || "00:00"}`));
+  cont.innerHTML = "";
+
+  for (const t of turnos) {
+    const card = document.createElement("div");
+    card.className = "turno";
+
+    const estado = document.createElement("div");
+    estado.className = `estado ${t.estado || "pendiente"}`;
+    estado.textContent = NOMBRE_ESTADO[t.estado || "pendiente"] || "Pendiente";
+
+    const nombre = document.createElement("div");
+    nombre.className = "nombre";
+    nombre.textContent = t.nombre || "Sin nombre";
+
+    const detalle = document.createElement("div");
+    detalle.className = "detalle";
+    detalle.innerHTML = `
+      <span>${formatearFecha(t.fecha)} · ${t.hora || "--:--"}</span>
+      <span>${t.tipoNombre || "Sin tipo"} · ${t.telefono || "Sin teléfono"}</span>
+      ${t.notas ? `<span>Notas: ${t.notas}</span>` : ""}
+    `;
+
+    const precio = document.createElement("div");
+    precio.className = "precio";
+    precio.textContent = `$${Number(t.precio || 0).toFixed(2)}`;
+
+    const acciones = document.createElement("div");
+    acciones.className = "acciones";
+
+    const pasos = [
+      ["Pendiente", "pendiente"],
+      ["Confirmado", "confirmado"],
+      ["Realizado", "realizado"],
+      ["Cancelado", "cancelado"]
+    ];
+
+    for (const [label, estadoKey] of pasos) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = label;
+      btn.onclick = async () => {
+        try {
+          t.estado = estadoKey;
+          await guardar("turnos", t);
+          await renderTurnos();
+        } catch (error) {
+          console.error(error);
+          toast("No se pudo actualizar el turno");
+        }
+      };
+      acciones.appendChild(btn);
+    }
+
+    const borrarBtn = document.createElement("button");
+    borrarBtn.type = "button";
+    borrarBtn.textContent = "Borrar";
+    borrarBtn.className = "borrar";
+    borrarBtn.onclick = async () => {
+      try {
+        await borrar("turnos", t.id);
+        toast("Turno eliminado");
+        await renderTurnos();
+      } catch (error) {
+        console.error(error);
+        toast("No se pudo eliminar el turno");
+      }
+    };
+    acciones.appendChild(borrarBtn);
+
+    card.append(estado, nombre, detalle, precio, acciones);
+    cont.appendChild(card);
+  }
+}
+
+async function guardarTurno() {
+  const nombreInput = $("nombre");
+  const telefonoInput = $("telefono");
+  const tipoSelect = $("tipo");
+  const fechaInput = $("fecha");
+  const horaInput = $("hora");
+  const notasInput = $("notas");
+
+  if (!nombreInput || !telefonoInput || !tipoSelect || !fechaInput || !horaInput || !notasInput) return;
+
+  const nombre = nombreInput.value.trim();
+  const telefono = telefonoInput.value.trim();
+  const tipoId = tipoSelect.value;
+  const fecha = fechaInput.value;
+  const hora = horaInput.value;
+  const notas = notasInput.value.trim();
+  const tipoSel = tipoSelect.selectedOptions[0];
+
+  if (!nombre || !telefono || !tipoId || !fecha) {
+    toast("Completá nombre, teléfono, tipo y fecha");
+    return;
+  }
+
+  const tipo = {
+    id: Number(tipoId),
+    nombre: tipoSel?.dataset?.nombre || "",
+    precio: Number(tipoSel?.dataset?.precio || 0)
+  };
+
+  const turno = {
+    nombre,
+    telefono,
+    tipoId: tipo.id,
+    tipoNombre: tipo.nombre,
+    precio: tipo.precio,
+    fecha,
+    hora,
+    notas,
+    estado: "pendiente"
+  };
+
+  try {
+    await guardar("turnos", turno);
+    toast("Turno guardado");
+
+    nombreInput.value = "";
+    telefonoInput.value = "";
+    tipoSelect.value = "";
+    fechaInput.value = hoyISO();
+    horaInput.value = "";
+    notasInput.value = "";
+
+    await renderTurnos();
+  } catch (error) {
+    console.error(error);
+    toast("No se pudo guardar el turno");
+  }
+}
+
+async function iniciarApp() {
+  const fechaInput = $("fecha");
+  if (fechaInput) fechaInput.value = hoyISO();
+
+  await abrirDB();
+  await renderTipos();
+  await cargarSelectTipos();
+  await renderTurnos();
+}
+
+window.addEventListener("DOMContentLoaded", iniciarApp);
+</script>
+</body>
+</html>
+
