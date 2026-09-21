@@ -1,0 +1,17 @@
+{
+  "name": "Definición Nails",
+  "short_name": "Definición",
+  "description": "Turnos y gestión de Definición Nails",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f9f5f3",
+  "theme_color": "#0075a3",
+  "icons": [
+    {
+      "src": "aura.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
