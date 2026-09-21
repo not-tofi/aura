@@ -1,7 +1,7 @@
 {
-  "name": "Definición Nails",
-  "short_name": "Definición",
-  "description": "Turnos y gestión de Definición Nails",
+  "name": "Aura",
+  "short_name": "Aura",
+  "description": "Gestión de turnos de Aura",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#f9f5f3",
