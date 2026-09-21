@@ -142,7 +142,7 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-block;
   width: 44px;
   height: 44px;
-  background-image: url('aura.jpg');
+  background-image: url('../img/aura.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
