@@ -5,33 +5,39 @@
 }
 
 :root {
-  --bg: #fdf1f8;
-  --bg-deep: #f7e7fb;
-  --surface: #fff7fb;
+  --bg: #f7efe8;
+  --bg-deep: #f1e3d9;
+  --surface: #fffaf6;
   --surface-strong: #ffffff;
-  --primary: #f472b6;
-  --primary-strong: #c026d3;
-  --pink: #f472b6;
-  --pink-soft: #ffd9eb;
-  --rose: #f9a8d4;
-  --text: #3f2435;
-  --muted: #7d5367;
-  --border: #f5d3e7;
-  --success: #16a34a;
-  --warning: #d97706;
-  --danger: #dc2626;
-  --shadow: 0 18px 38px rgba(154, 87, 117, 0.16);
+  --primary: #b97a5c;
+  --primary-strong: #6d4a3d;
+  --pink: #d99d8d;
+  --pink-soft: #f5e4dc;
+  --rose: #e7b4a6;
+  --text: #49372f;
+  --muted: #7d615c;
+  --border: #e7d4ca;
+  --success: #3a7d5d;
+  --warning: #c77c36;
+  --danger: #b85b4d;
+  --shadow: 0 18px 38px rgba(94, 66, 56, 0.12);
   --ancho-panel: 280px;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.98) 0%, rgba(255, 214, 234, 0.8) 18%, rgba(255, 240, 248, 0.9) 32%, rgba(250, 229, 255, 0.96) 100%);
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  background: #f8f1ec;
   color: var(--text);
   min-height: 100vh;
   line-height: 1.5;
   padding-left: 108px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  letter-spacing: 0.02em;
 }
 
 .app-shell {
@@ -41,7 +47,7 @@ body {
 }
 
 .topbar {
-  background: linear-gradient(135deg, #ec4899, #a855f7);
+  background: linear-gradient(135deg, #c28a6d, #9a6854);
   color: white;
   border-radius: 20px;
   padding: 18px 18px 14px;
@@ -91,14 +97,14 @@ body {
   border-radius: 999px;
   font-weight: 700;
   color: white;
-  background: rgba(255,255,255,0.13);
-  border: 1px solid rgba(255,255,255,0.24);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
   transition: 0.2s ease;
 }
 
 .main-nav a:hover,
 .main-nav a.active {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.18);
 }
 
 .btn-opciones {
@@ -112,39 +118,49 @@ body {
   justify-content: center;
   gap: 4px;
   width: auto;
-  min-width: 56px;
-  padding: 4px 2px 2px;
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  backdrop-filter: none;
-  box-shadow: none;
+  min-width: 58px;
+  padding: 6px 6px 5px;
+  border: 1px solid rgba(96, 87, 79, 0.18);
+  border-radius: 18px;
+  background: rgba(247, 239, 232, 0.86);
+  backdrop-filter: blur(2px);
+  box-shadow: 0 8px 18px rgba(96, 81, 69, 0.08);
   cursor: pointer;
-  transition: transform 0.35s ease, opacity 0.2s ease;
+  transition: transform 0.35s ease, box-shadow 0.25s ease, background 0.25s ease;
   margin-left: 0;
   box-sizing: border-box;
   opacity: 1;
 }
 
+.btn-opciones:hover,
+.btn-opciones:focus-visible {
+  background: rgba(252, 246, 241, 0.95);
+  box-shadow: 0 10px 22px rgba(96, 81, 69, 0.12);
+}
+
 .btn-opciones .logoo {
   display: inline-block;
-  width: 42px;
-  height: 42px;
-  background-image: linear-gradient(135deg, #ec4899, #a855f7), url('imagenes/logo_de_empresa_nube_blanca.jpeg');
-  background-size: cover, contain;
-  background-repeat: no-repeat, no-repeat;
-  background-position: center, center;
+  width: 44px;
+  height: 44px;
+  background-image: url('aura.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   border-radius: 50%;
   transform-origin: center center;
   transition: transform 0.7s ease;
-  box-shadow: 0 8px 18px rgba(124, 58, 237, 0.25);
+  box-shadow: 0 8px 18px rgba(96, 81, 69, 0.12);
+  border: 2px solid rgba(92, 80, 70, 0.25);
+  background-color: #f8f1ec;
+  overflow: hidden;
+  object-fit: cover;
 }
 
 .btn-opciones .opcion {
   width: 54px;
   height: 2px;
   border-radius: 999px;
-  background: #0075a3;
+  background: #5b514a;
   display: block;
   margin-top: 2px;
   opacity: 1;
@@ -156,7 +172,7 @@ body {
   text-transform: lowercase;
   line-height: 1;
   margin: 0;
-  color: #0075a3;
+  color: #4b433d;
   font-weight: 800;
   white-space: nowrap;
   display: block;
@@ -200,12 +216,13 @@ body {
   border-radius: 18px;
   text-align: left;
   text-decoration: none;
-  background: #ffffff;
+  background: linear-gradient(180deg, #fffaf7 0%, #f7efe9 100%);
+  border: 1px solid rgba(123, 92, 75, 0.14);
   backdrop-filter: none;
   transform: translateX(calc(-100% - 18px));
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   z-index: 120;
-  box-shadow: 0 18px 40px rgba(32, 16, 38, 0.18);
+  box-shadow: 0 18px 40px rgba(89, 69, 58, 0.12);
   overflow-y: auto;
   overflow-x: hidden;
   opacity: 1;
@@ -233,6 +250,7 @@ body {
 .menu-header h3 {
   color: var(--primary-strong);
   font-size: 1.1rem;
+  letter-spacing: 0.04em;
 }
 
 .menu-cerrar {
@@ -259,16 +277,19 @@ body {
   padding: 12px 14px;
   border-radius: 12px;
   color: var(--text);
-  background: #ffffff;
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(123, 92, 75, 0.12);
   font-weight: 700;
   opacity: 1;
+  transition: transform 0.18s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .menu-nav a.active,
 .menu-nav a:hover {
-  background: linear-gradient(135deg, #ec4899, #a855f7);
+  background: linear-gradient(135deg, #c58d6b, #9d6a51);
   color: white;
+  box-shadow: 0 8px 18px rgba(126, 92, 75, 0.14);
+  transform: translateX(2px);
 }
 
 .content {
@@ -278,11 +299,11 @@ body {
 
 .card {
   position: relative;
-  background: linear-gradient(135deg, rgba(255, 248, 250, 0.96), rgba(255, 232, 244, 0.86));
-  border: 1px solid rgba(244, 158, 200, 0.45);
+  background: linear-gradient(135deg, rgba(255, 250, 247, 0.96), rgba(247, 233, 226, 0.88));
+  border: 1px solid rgba(184, 125, 96, 0.22);
   border-radius: 28px;
   padding: 22px;
-  box-shadow: 0 24px 50px rgba(161, 94, 136, 0.15), inset 0 1px 0 rgba(255,255,255,0.8);
+  box-shadow: 0 24px 50px rgba(118, 88, 77, 0.11), inset 0 1px 0 rgba(255,255,255,0.8);
   backdrop-filter: blur(4px);
   overflow: hidden;
 }
@@ -290,23 +311,24 @@ body {
 .card::before {
   content: "";
   position: absolute;
-  inset: -35% auto auto -18%;
-  width: 160px;
-  height: 160px;
-  background: radial-gradient(circle, rgba(249, 168, 212, 0.12), rgba(249, 168, 212, 0));
+  inset: -25% auto auto -12%;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(212, 160, 136, 0.08), rgba(212, 160, 136, 0));
   pointer-events: none;
-  opacity: 0.35;
+  opacity: 0.5;
 }
 
 .card::after {
   content: "";
   position: absolute;
-  right: -10%;
-  bottom: -18%;
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, rgba(216, 180, 254, 0.22), rgba(216, 180, 254, 0));
+  right: -8%;
+  bottom: -12%;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(212, 160, 136, 0.06), rgba(212, 160, 136, 0));
   pointer-events: none;
+  opacity: 0.45;
 }
 
 .card h2 {
@@ -556,16 +578,16 @@ button {
   font-weight: 800;
   font-family: inherit;
   cursor: pointer;
-  background: linear-gradient(135deg, #f472b6 0%, #d946ef 100%);
+  background: linear-gradient(135deg, #b97a5c 0%, #d8a185 100%);
   color: white;
   width: 100%;
-  box-shadow: 0 14px 24px rgba(217, 70, 239, 0.22);
+  box-shadow: 0 14px 24px rgba(148, 104, 80, 0.18);
   transition: transform 0.18s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
 button:hover {
   opacity: 0.98;
-  box-shadow: 0 16px 28px rgba(217, 70, 239, 0.26);
+  box-shadow: 0 16px 28px rgba(148, 104, 80, 0.22);
 }
 button:active { transform: scale(0.98); }
 
@@ -592,7 +614,7 @@ button:active { transform: scale(0.98); }
 }
 
 button.secundario {
-  background: #fdf2f8;
+  background: #f8efe9;
   color: var(--primary-strong);
   border: 1.5px solid var(--border);
   width: auto;
