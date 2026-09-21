@@ -854,18 +854,12 @@ function bindTurnosPage() {
   const btnAbrirSheets = $("btnAbrirSheets");
   const btnCompartir = $("btnCompartir");
   const btnCerrarAviso = $("btnCerrarAviso");
-  const inputImportar = $("inputImportar");
 
   if (btnExportarDia) btnExportarDia.addEventListener("click", exportarDia);
   if (btnExportarTodo) btnExportarTodo.addEventListener("click", exportarTodo);
   if (btnAbrirSheets) btnAbrirSheets.addEventListener("click", abrirEnDrive);
   if (btnCompartir) btnCompartir.addEventListener("click", compartirRespaldo);
   if (btnCerrarAviso) btnCerrarAviso.addEventListener("click", cerrarAviso);
-  if (inputImportar) inputImportar.addEventListener("change", (event) => {
-    const file = event.target.files?.[0];
-    if (file) importarCSV(file);
-    event.target.value = "";
-  });
 
   window.guardarTurno = guardarTurno;
   window.agregarTipo = agregarTipo;
