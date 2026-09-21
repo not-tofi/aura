@@ -8,9 +8,9 @@
   "theme_color": "#0075a3",
   "icons": [
     {
-      "src": "aura.jpg",
+      "src": "aura-icon.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]
