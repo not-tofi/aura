@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agregar turno | Definición Nails</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body data-page="generarturno">
+    <button id="abrir-menu" class="btn-opciones" type="button" aria-expanded="false" aria-controls="menu-lateral">
+      <span class="opcion" aria-label="Abrir menú"></span>
+      <span class="logoo" aria-label="Logo dentro del botón"></span>
+      <p style="color: #0075a3; margin: 0; font-weight: 800;">menu</p>
+    </button>
+
+    <div id="menu-overlay" class="menu-overlay" aria-hidden="true"></div>
+
+    <aside id="menu-lateral" class="menu-lateral" aria-label="Menú lateral" aria-hidden="true">
+      <div class="menu-header">
+        <h3>Menú</h3>
+      </div>
+
+      <nav class="menu-nav" aria-label="Menú principal">
+        <a href="index.html">Inicio</a>
+        <a href="turnos.html">Sala</a>
+        <a href="generarturno.html" class="active">Agregar turno</a>
+        <a href="tipos.html">Tipos</a>
+        <a href="cuentabancaria.html">Cuenta</a>
+        <a href="historial.html">Historial</a>
+      </nav>
+    </aside>
+
+    <div class="app-shell">
+      <main class="content">
+        <section class="card">
+          <h2>Agregar turno</h2>
+
+          <label for="nombre">Nombre del cliente</label>
+          <input id="nombre" type="text" placeholder="Ej: Ana Pérez" />
+
+          <label for="telefono">Teléfono</label>
+          <input id="telefono" type="tel" placeholder="Ej: 1122334455" />
+
+          <label for="tipo">Tipo de uña solicitado</label>
+          <select id="tipo"></select>
+
+          <div class="fila">
+            <div class="slot-wrap date-picker-shell">
+              <label for="fecha">Fecha del turno</label>
+              <input id="fecha" type="date" class="simple-date-input" value="" />
+            </div>
+            <div class="slot-wrap">
+              <label for="hora">Horario</label>
+              <select id="hora" class="slot-select" disabled>
+                <option value="">Cargando horarios...</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="notas">Notas (opcional)</label>
+          <textarea id="notas" rows="2"></textarea>
+
+          <button type="button" onclick="guardarTurno()">Guardar turno</button>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" aria-live="polite"></div>
+  </body>
+</html>
