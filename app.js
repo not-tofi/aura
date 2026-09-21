@@ -965,7 +965,13 @@ function initMenuLateral() {
 
   const toggleMenu = (isOpen) => {
     menuLateral.classList.toggle("open", isOpen);
-    overlay?.classList.toggle("visible", isOpen);
+    if (overlay) {
+      overlay.classList.remove("visible");
+      overlay.style.display = "none";
+      overlay.style.opacity = "0";
+      overlay.style.visibility = "hidden";
+      overlay.style.pointerEvents = "none";
+    }
     abrirMenu.setAttribute("aria-expanded", String(isOpen));
     menuLateral.setAttribute("aria-hidden", String(!isOpen));
     document.body.classList.toggle("menu-open", isOpen);
