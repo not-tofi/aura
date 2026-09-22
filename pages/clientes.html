@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -9,13 +9,13 @@
     <meta name="apple-mobile-web-app-title" content="Aura Nails" />
     <meta name="format-detection" content="telephone=no" />
     <title>Aura Nails</title>
-    <link rel="manifest" href="./manifest.json" />
-    <link rel="icon" href="./assets/img/aura-icon.png" type="image/png" />
-    <link rel="apple-touch-icon" href="./assets/img/aura-icon.png" />
-    <link rel="stylesheet" href="./assets/css/styles.css" />
-    <script src="./assets/js/app.js" defer></script>
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="icon" href="../assets/img/aura-icon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="../assets/img/aura-icon.png" />
+    <link rel="stylesheet" href="../assets/css/styles.css" />
+    <script src="../assets/js/app.js" defer></script>
   </head>
-  <body data-page="home">
+  <body data-page="clientes">
     <button id="abrir-menu" class="btn-opciones" type="button" aria-expanded="false" aria-controls="menu-lateral">
       <span class="opcion" aria-label="Abrir menú"></span>
       <span class="logoo" aria-label="Logo dentro del botón"></span>
@@ -30,25 +30,25 @@
       </div>
 
       <nav class="menu-nav" aria-label="Menú principal">
-        <a href="./index.html" class="active">Inicio</a>
-        <a href="./pages/turnos.html">Sala</a>
-        <a href="./pages/generarturno.html">Agregar turno</a>
-        <a href="./pages/clientes.html">Clientes</a>
-        <a href="./pages/tipos.html">Tipos</a>
-        <a href="./pages/cuentabancaria.html">Cuenta</a>
-        <a href="./pages/historial.html">Historial</a>
+        <a href="../index.html">Inicio</a>
+        <a href="turnos.html">Sala</a>
+        <a href="generarturno.html">Agregar turno</a>
+        <a href="clientes.html" class="active">Clientes</a>
+        <a href="tipos.html">Tipos</a>
+        <a href="cuentabancaria.html">Cuenta</a>
+        <a href="historial.html">Historial</a>
       </nav>
     </aside>
 
     <div class="app-shell">
       <main class="content">
         <section class="card">
-          <h2>Resumen</h2>
-          <div id="homeResumen"></div>
+          <h2>Clientes</h2>
+          <div id="listaClientes"></div>
         </section>
-
-
       </main>
     </div>
+
+    <div id="toast" class="toast" aria-live="polite"></div>
   </body>
 </html>

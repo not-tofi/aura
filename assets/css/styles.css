@@ -26,13 +26,21 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  background: #f8f1ec;
+}
+
 body {
   font-family: "Manrope", "Segoe UI", sans-serif;
-  background: #f8f1ec;
+  background: linear-gradient(180deg, #f7efe9 0%, #fdf8f5 100%);
   color: var(--text);
   min-height: 100vh;
   line-height: 1.5;
   padding-left: 108px;
+  padding-top: max(16px, env(safe-area-inset-top));
+  overscroll-behavior-y: none;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -44,6 +52,12 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 1100px;
   margin: 0 auto;
   padding: 20px 14px 80px;
+}
+
+.content {
+  display: grid;
+  gap: 18px;
+  padding-bottom: 32px;
 }
 
 .topbar {
@@ -109,8 +123,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-opciones {
   position: fixed;
-  left: 12px;
-  top: 12px;
+  left: calc(12px + env(safe-area-inset-left));
+  top: calc(12px + env(safe-area-inset-top));
   z-index: 50;
   display: inline-flex;
   flex-direction: column;
@@ -208,21 +222,21 @@ h1, h2, h3, h4, h5, h6 {
 
 .menu-lateral {
   position: fixed;
-  left: 12px;
-  top: 90px;
+  left: calc(12px + env(safe-area-inset-left));
+  top: calc(90px + env(safe-area-inset-top));
   width: min(220px, 72vw);
   max-height: min(70vh, 420px);
   padding: 16px 14px 14px;
-  border-radius: 18px;
+  border-radius: 20px;
   text-align: left;
   text-decoration: none;
-  background: linear-gradient(180deg, #fffaf7 0%, #f7efe9 100%);
-  border: 1px solid rgba(123, 92, 75, 0.14);
-  backdrop-filter: none;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(123, 92, 75, 0.12);
+  backdrop-filter: blur(10px);
   transform: translateX(calc(-100% - 18px));
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   z-index: 120;
-  box-shadow: 0 18px 40px rgba(89, 69, 58, 0.12);
+  box-shadow: 0 16px 36px rgba(89, 69, 58, 0.12);
   overflow-y: auto;
   overflow-x: hidden;
   opacity: 1;
@@ -299,13 +313,20 @@ h1, h2, h3, h4, h5, h6 {
 
 .card {
   position: relative;
-  background: linear-gradient(135deg, rgba(255, 250, 247, 0.96), rgba(247, 233, 226, 0.88));
-  border: 1px solid rgba(184, 125, 96, 0.22);
-  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(184, 125, 96, 0.18);
+  border-radius: 24px;
   padding: 22px;
-  box-shadow: 0 24px 50px rgba(118, 88, 77, 0.11), inset 0 1px 0 rgba(255,255,255,0.8);
-  backdrop-filter: blur(4px);
+  box-shadow: 0 10px 28px rgba(120, 88, 75, 0.08), inset 0 1px 0 rgba(255,255,255,0.8);
+  backdrop-filter: blur(8px);
   overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.65);
+}
+
+.card h2 {
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  font-weight: 700;
+  color: #7a5348;
 }
 
 .card::before {
@@ -574,6 +595,7 @@ button {
   border: none;
   border-radius: 14px;
   padding: 13px 18px;
+  min-height: 46px;
   font-size: 0.96rem;
   font-weight: 800;
   font-family: inherit;
@@ -581,8 +603,14 @@ button {
   background: linear-gradient(135deg, #b97a5c 0%, #d8a185 100%);
   color: white;
   width: 100%;
-  box-shadow: 0 14px 24px rgba(148, 104, 80, 0.18);
+  box-shadow: 0 12px 20px rgba(148, 104, 80, 0.18);
   transition: transform 0.18s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+button:active {
+  transform: scale(0.98);
 }
 
 button:hover {
@@ -614,10 +642,12 @@ button:active { transform: scale(0.98); }
 }
 
 button.secundario {
-  background: #f8efe9;
+  background: rgba(255, 255, 255, 0.75);
   color: var(--primary-strong);
-  border: 1.5px solid var(--border);
+  border: 1px solid rgba(132, 101, 88, 0.16);
   width: auto;
+  box-shadow: 0 8px 18px rgba(90, 72, 67, 0.05);
+  font-weight: 700;
 }
 
 button.borrar {
@@ -670,10 +700,11 @@ button.borrar {
 
 .turno {
   border-left: 4px solid var(--pink);
-  background: white;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
   padding: 12px;
   margin-bottom: 10px;
+  box-shadow: 0 8px 18px rgba(92, 70, 61, 0.04);
 }
 
 .turno .nombre {
@@ -743,10 +774,11 @@ button.borrar {
 }
 
 .summary-card {
-  border-radius: 14px;
+  border-radius: 18px;
   padding: 16px;
-  background: linear-gradient(135deg, #faf5ff, #fff0f7);
-  border: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(255, 243, 247, 0.9), rgba(255, 255, 255, 0.8));
+  border: 1px solid rgba(184, 125, 96, 0.14);
+  box-shadow: 0 8px 18px rgba(103, 72, 67, 0.04);
 }
 
 .summary-card strong {
@@ -824,6 +856,21 @@ button.borrar {
 }
 
 @media (max-width: 500px) {
+  body {
+    padding-left: 0;
+  }
+
+  .app-shell {
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: calc(20px + env(safe-area-inset-top));
+  }
+
+  .card {
+    padding: 18px 16px;
+    border-radius: 22px;
+  }
+
   .fila {
     flex-direction: column;
     gap: 0;
@@ -831,5 +878,14 @@ button.borrar {
 
   .brand {
     align-items: flex-start;
+  }
+
+  .menu-lateral {
+    width: min(260px, 82vw);
+  }
+
+  .btn-opciones {
+    left: 10px;
+    top: calc(10px + env(safe-area-inset-top));
   }
 }

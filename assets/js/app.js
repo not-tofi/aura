@@ -552,6 +552,8 @@ function aCSV(filas) {
     .join("\r\n");
 }
 
+const NOMBRE_CARPETA_HISTORIAL = "Historial de Aura";
+
 function descargarCSV(nombreArchivo, contenido) {
   const blob = new Blob(["\uFEFF" + contenido], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
@@ -562,6 +564,38 @@ function descargarCSV(nombreArchivo, contenido) {
   link.click();
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
+}
+
+async function guardarCSVEnArchivos(nombreArchivo, contenido) {
+  const blob = new Blob(["\uFEFF" + contenido], { type: "text/csv;charset=utf-8;" });
+  const file = new File([blob], nombreArchivo, { type: "text/csv" });
+
+  if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({
+        title: NOMBRE_CARPETA_HISTORIAL,
+        text: "CSV de turnos",
+        files: [file]
+      });
+      return true;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  descargarCSV(nombreArchivo, contenido);
+  return false;
+}
+
+async function exportarCSVConDestino(nombreArchivo, contenido, textoAviso) {
+  const guardado = await guardarCSVEnArchivos(nombreArchivo, contenido);
+
+  if (guardado) {
+    mostrarAviso(`${textoAviso} Elegí guardar en Archivos.`);
+    return;
+  }
+
+  mostrarAviso(textoAviso);
 }
 
 function crearMetaDrive(nombreArchivo, total, fecha = hoyISO()) {
@@ -664,9 +698,9 @@ async function exportarDia() {
 
   const nombreArchivo = `turnos_${fecha}.csv`;
   const meta = crearMetaDrive(nombreArchivo, delDia.length, fecha);
+  const contenido = aCSV(filas);
 
-  descargarCSV(nombreArchivo, aCSV(filas));
-  mostrarAviso(`Respaldo del ${formatearFecha(fecha)} descargado (${delDia.length} turnos).`);
+  await exportarCSVConDestino(nombreArchivo, contenido, `Respaldo del ${formatearFecha(fecha)} descargado (${delDia.length} turnos).`);
   console.log("Meta CSV para Drive:", meta);
 }
 
@@ -696,9 +730,9 @@ async function exportarTodo() {
 
   const nombreArchivo = `turnos_todos_${hoyISO()}.csv`;
   const meta = crearMetaDrive(nombreArchivo, turnos.length, hoyISO());
+  const contenido = aCSV(filas);
 
-  descargarCSV(nombreArchivo, aCSV(filas));
-  mostrarAviso(`Se exportaron todos los turnos (${turnos.length}).`);
+  await exportarCSVConDestino(nombreArchivo, contenido, `Se exportaron todos los turnos (${turnos.length}).`);
   console.log("Meta CSV para Drive:", meta);
 }
 
@@ -854,12 +888,14 @@ function bindTurnosPage() {
   const btnAbrirSheets = $("btnAbrirSheets");
   const btnCompartir = $("btnCompartir");
   const btnCerrarAviso = $("btnCerrarAviso");
+  const btnGuardarEnArchivos = $("btnGuardarEnArchivos");
 
   if (btnExportarDia) btnExportarDia.addEventListener("click", exportarDia);
   if (btnExportarTodo) btnExportarTodo.addEventListener("click", exportarTodo);
   if (btnAbrirSheets) btnAbrirSheets.addEventListener("click", abrirEnDrive);
   if (btnCompartir) btnCompartir.addEventListener("click", compartirRespaldo);
   if (btnCerrarAviso) btnCerrarAviso.addEventListener("click", cerrarAviso);
+  if (btnGuardarEnArchivos) btnGuardarEnArchivos.addEventListener("click", () => exportarTodo());
 
   window.guardarTurno = guardarTurno;
   window.agregarTipo = agregarTipo;
@@ -956,6 +992,65 @@ async function renderHome() {
   }
 }
 
+async function renderClientes() {
+  const cont = $("listaClientes");
+  if (!cont) return;
+
+  const turnos = await listar("turnos");
+
+  if (turnos.length === 0) {
+    cont.innerHTML = '<p class="vacio">Todavía no hay clientes cargados.</p>';
+    return;
+  }
+
+  const clientesMap = new Map();
+
+  for (const turno of turnos) {
+    const nombre = (turno.nombre || "Sin nombre").trim();
+    if (!nombre) continue;
+
+    if (!clientesMap.has(nombre)) {
+      clientesMap.set(nombre, {
+        nombre,
+        telefono: turno.telefono || "Sin teléfono",
+        tipo: turno.tipoNombre || "Sin tipo",
+        fecha: turno.fecha || "",
+        hora: turno.hora || "",
+        estado: turno.estado || "pendiente",
+        notas: turno.notas || ""
+      });
+    }
+  }
+
+  const clientes = [...clientesMap.values()].sort((a, b) => a.nombre.localeCompare(b.nombre));
+  cont.innerHTML = "";
+
+  for (const cliente of clientes) {
+    const card = document.createElement("div");
+    card.className = "turno";
+
+    const estado = document.createElement("div");
+    estado.className = `estado ${cliente.estado}`;
+    estado.textContent = NOMBRE_ESTADO[cliente.estado] || "Pendiente";
+
+    const nombre = document.createElement("div");
+    nombre.className = "nombre";
+    nombre.textContent = cliente.nombre;
+
+    const detalle = document.createElement("div");
+    detalle.className = "detalle";
+    detalle.innerHTML = `
+      <span><strong>Teléfono:</strong> ${cliente.telefono}</span>
+      <span><strong>Tipo:</strong> ${cliente.tipo}</span>
+      <span><strong>Próximo turno:</strong> ${cliente.fecha ? formatearFecha(cliente.fecha) : "Sin fecha"} ${cliente.hora ? `- ${cliente.hora}` : ""}</span>
+      ${cliente.notas ? `<span><strong>Notas:</strong> ${cliente.notas}</span>` : ""}
+    `;
+
+    card.append(estado, nombre, detalle);
+    cont.appendChild(card);
+  }
+}
+
 function initMenuLateral() {
   const abrirMenu = document.getElementById("abrir-menu");
   const menuLateral = document.getElementById("menu-lateral");
@@ -1006,6 +1101,11 @@ async function iniciarApp() {
   if (document.body.dataset.page === "turnos") {
     await renderTurnos();
     bindTurnosPage();
+    return;
+  }
+
+  if (document.body.dataset.page === "clientes") {
+    await renderClientes();
     return;
   }
 
