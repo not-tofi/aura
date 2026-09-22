@@ -48,16 +48,16 @@ body {
   right: 16px;
   bottom: 10px;
   z-index: 1;
-  font-size: 0.58rem;
+  font-size: 0.5rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(73, 55, 47, 0.08);
+  color: rgba(73, 55, 47, 0.04);
   pointer-events: none;
   user-select: none;
   white-space: nowrap;
-  transform: rotate(-12deg);
-  opacity: 0.6;
+  transform: rotate(-8deg);
+  opacity: 0.25;
   text-shadow: none;
 }
 
