@@ -38,7 +38,7 @@ body {
   color: var(--text);
   min-height: 100vh;
   line-height: 1.5;
-  padding-left: 108px;
+  padding-left: 128px;
   padding-top: max(16px, env(safe-area-inset-top));
   overscroll-behavior-y: none;
 }
@@ -67,6 +67,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .app-shell {
+  width: min(1100px, calc(100vw - 170px));
   max-width: 1100px;
   margin: 0 auto;
   padding: 20px 14px 80px;
